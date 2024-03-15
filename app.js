@@ -32,10 +32,18 @@ const connection = mysql.createConnection({
 //     connection.end();
 //   });
 // });
-const videoRoutes=require('./Routes/videoRoutes.js')
+const videoRoutes=require('./Routes/videoRoutes.js');
+const audioBookRoutes=require("./Routes/audioBookRoutes.js")
+const categoryRoutes=require("./Routes/categoryRoutes.js");
+const ebookRoutes=require("./Routes/eBookRoutes.js");
+const shopRoutes=require("./Routes/shopRoutes.js");
 const port = process.env.PORT || 8082;
 app.use(express.json());
 app.use("/videos",videoRoutes);
+app.use("/audiobooks",audioBookRoutes);
+app.use("/category",categoryRoutes);
+app.use("/ebooks",ebookRoutes);
+app.use("/shop",shopRoutes);
 app.listen(port, () => {
     console.log(`listening on port:${port}`);
 })

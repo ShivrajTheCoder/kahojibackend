@@ -8,32 +8,32 @@ const pool = mysql.createPool(dbConfig);
 // Promisify pool methods
 const queryPromise = promisify(pool.query).bind(pool);
 
-const getEbooks = async () => {
+const getShop = async () => {
     try {
-        const query = 'SELECT * FROM ebooks';
+        const query = 'SELECT * FROM shop';
         const rows = await queryPromise(query);
         return rows;
     } catch (error) {
-        console.error('Error fetching ebooks:', error);
+        console.error('Error fetching videos:', error);
         throw error;
     }
 };
 
-const getEbooksById = async (id) => {
+const getShopById = async (id) => {
     try {
-        const query = 'SELECT * FROM ebooks WHERE id = ?';
+        const query = 'SELECT * FROM shop WHERE id = ?';
         const rows = await queryPromise(query, [id]);
         if (!rows || rows.length < 1) {
             return null;
         }
         return rows[0];
     } catch (error) {
-        console.error('Error fetching ebook by id:', error);
+        console.error('Error fetching video by id:', error);
         throw error;
     }
 }
 
 module.exports = {
-    getEbooks,
-    getEbooksById
+    getShop,
+    getShopById
 };
