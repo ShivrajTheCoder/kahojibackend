@@ -33,7 +33,20 @@ const getCirclesById = async (id) => {
     }
 }
 
+
+const joinCircle = async (userId, circleId) => {
+    try {
+        const insertQuery = 'INSERT INTO circle_members (user_id, circle_id) VALUES (?, ?)';
+        const result = await queryPromise(insertQuery, [userId, circleId]);
+        return result; // You might return some meaningful data here if needed
+    } catch (error) {
+        console.error('Error joining circle:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     getCircles,
-    getCirclesById
+    getCirclesById,
+    joinCircle
 };

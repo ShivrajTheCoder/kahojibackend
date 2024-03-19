@@ -1,6 +1,7 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
-const { NotFoundError } = require("../Utils/CustomErrors");
-const { getCircles, getCirclesById } = require("../db/CircleActions");
+const { NotFoundError, CustomError } = require("../Utils/CustomErrors");
+const { getCircles, getCirclesById, joinCircle } = require("../db/CircleActions");
+const { getUserById } = require("../db/UserActions");
 
 const exp = module.exports;
 
@@ -34,3 +35,26 @@ exp.getCirclesById = RouterAsyncErrorHandler(async (req, res, next) => {
         next(error);
     }
 });
+
+exp.joinCircle = RouterAsyncErrorHandler(async (req, res, next) => {
+    const { userId, circleId } = req.body;
+    try {
+        const circle = await getCirclesById(circleId);
+        const user = await getUserById(userId);
+        if (!circle || !user) {
+            throw new NotFoundError("Circle or user not found");
+        }
+        const resp = await joinCircle(userId, circleId);
+        if (resp.affectedRows === 1) {
+            return res.status(200).json({
+                resp,
+                message: "Joined circle successfully"
+            });
+        }
+        else {
+            throw new CustomError("Error joining circle", 500);
+        }
+    } catch (error) {
+        next(error);
+    }
+})
