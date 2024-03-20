@@ -1,9 +1,8 @@
 const express = require('express');
-const { getShikhas, getShikhaById } = require('../Controllers/ShikshaController');
-
+const { getShikshas, getShikshaById } = require('../Controllers/ShikshaController');
 const router = express.Router();
 
-router.route("/getallshikhas").get(getShikhas);
-router.route("/getshikhabyid/:id").get(getShikhaById);
+router.route("/getallshikshas").get(getShikshas);
+router.route("/getshikshabyid/:id").get(getShikshaById);
 
 module.exports = router;

@@ -8,32 +8,32 @@ const pool = mysql.createPool(dbConfig);
 // Promisify pool methods
 const queryPromise = promisify(pool.query).bind(pool);
 
-const getShiksha = async () => {
+const getKaryashala = async () => {
     try {
-        const query = 'SELECT * FROM shiksha';
+        const query = 'SELECT * FROM karyashala';
         const rows = await queryPromise(query);
         return rows;
     } catch (error) {
-        console.error('Error fetching shikhas:', error);
+        console.error('Error fetching karyashala:', error);
         throw error;
     }
 };
 
-const getShikshaById = async (id) => {
+const getKaryashalaById = async (id) => {
     try {
-        const query = 'SELECT * FROM shiksha WHERE id = ?';
+        const query = 'SELECT * FROM karyashala WHERE id = ?';
         const rows = await queryPromise(query, [id]);
         if (!rows || rows.length < 1) {
             return null;
         }
         return rows[0];
     } catch (error) {
-        console.error('Error fetching shikha by id:', error);
+        console.error('Error fetching karyashala by id:', error);
         throw error;
     }
 }
 
 module.exports = {
-    getShiksha,
-    getShikshaById
+    getKaryashala,
+    getKaryashalaById
 };

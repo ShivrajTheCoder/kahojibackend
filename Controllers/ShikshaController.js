@@ -1,12 +1,12 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
-const { getShikha, getShikhaById } = require("../db/ShikshaActions");
+const { getShiksha, getShikshaById } = require("../db/ShikshaActions");
 
 const exp = module.exports;
 
-exp.getShikhas = RouterAsyncErrorHandler(async (req, res, next) => {
+exp.getShikshas = RouterAsyncErrorHandler(async (req, res, next) => {
     try {
-        const shikhas = await getShikha();
+        const shikhas = await getShiksha();
         if (shikhas.length < 1) {
             throw new NotFoundError("No shikhas found");
         }
@@ -19,10 +19,11 @@ exp.getShikhas = RouterAsyncErrorHandler(async (req, res, next) => {
     }
 });
 
-exp.getShikhaById = RouterAsyncErrorHandler(async (req, res, next) => {
+
+exp.getShikshaById = RouterAsyncErrorHandler(async (req, res, next) => {
     try {
         const { id } = req.params;
-        const shikha = await getShikhaById(id);
+        const shikha = await getShikshaById(id);
         if (!shikha) {
             throw new NotFoundError("Shikha not found");
         }
