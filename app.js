@@ -42,8 +42,10 @@ const shikshaRoutes=require("./Routes/shikshaRoutes.js");
 const circleRoutes=require("./Routes/circleRoutes.js");
 const communityRoutes=require("./Routes/communityRoutes.js");
 const karyashalaRoutes=require("./Routes/karyashalaRoutes.js");
+const pathshalaRoutes=require("./Routes/pathshalaRoutes.js");
 const eventsRoutes=require("./Routes/eventsRoutes.js");
 const creatorRoutes=require("./Routes/creatorRoutes.js");
+const otherRoutes=require("./Routes/otherRoutes.js");
 const port = process.env.PORT || 8082;
 app.use(express.json());
 app.use("/videos",videoRoutes);
@@ -56,8 +58,10 @@ app.use("/shiksha",shikshaRoutes);
 app.use("/circles",circleRoutes);
 app.use("/communities",communityRoutes);
 app.use("/karyashala",karyashalaRoutes);
+app.use("/pathshala",pathshalaRoutes);
 app.use("/events",eventsRoutes);
 app.use("/creator",creatorRoutes);
+app.use("/others",otherRoutes);
 app.listen(port, () => {
     console.log(`listening on port:${port}`);
 })
