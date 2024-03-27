@@ -33,7 +33,34 @@ const getShopById = async (id) => {
     }
 }
 
+
+const placeOrder = async (userId, itemId) => {
+    try {
+        const query = 'INSERT INTO orders (userid, paymentstatus, item_id) VALUES (?, ?, ?)';
+        const result = await queryPromise(query, [userId, 0, itemId]);
+        console.log(result);
+        return result.insertId; // Return the ID of the inserted order
+    } catch (error) {
+        console.error('Error placing order:', error);
+        throw error;
+    }
+}
+
+
+const getUserOrders = async (userId) => {
+    try {
+        const query = 'SELECT * FROM orders WHERE userid = ?';
+        const rows = await queryPromise(query, [userId]);
+        return rows;
+    } catch (error) {
+        console.error('Error fetching user orders:', error);
+        throw error;
+    }
+}
+
 module.exports = {
     getShop,
-    getShopById
+    getShopById,
+    placeOrder,
+    getUserOrders
 };

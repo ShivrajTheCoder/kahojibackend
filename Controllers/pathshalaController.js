@@ -7,7 +7,7 @@ const exp = module.exports;
 exp.getPathshala = RouterAsyncErrorHandler(async (req, res, next) => {
     try {
         const pathshalas = await getPathshala();
-        console.log(pathshalas);
+        // console.log(pathshalas);
         if (pathshalas?.length < 1 || !pathshalas) {
             throw new NotFoundError("No pathshala found");
         }
