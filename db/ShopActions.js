@@ -58,9 +58,21 @@ const getUserOrders = async (userId) => {
     }
 }
 
+const getShopCategories= async () => {
+    try {
+        const query = 'SELECT * FROM shop_category';
+        const rows = await queryPromise(query);
+        return rows;
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     getShop,
     getShopById,
     placeOrder,
-    getUserOrders
+    getUserOrders,
+    getShopCategories
 };

@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
-const { getShop, getShopById, placeOrder, getUserOrders } = require("../db/ShopActions");
+const { getShop, getShopById, placeOrder, getUserOrders, getShopCategories } = require("../db/ShopActions");
 const { getUserById } = require("../db/UserActions");
 
 const exp = module.exports
@@ -14,6 +14,20 @@ exp.getShop = RouterAsyncErrorHandler(async (req, res, next) => {
         return res.status(200).json({
             shops,
             message: "Shop fetched successfully"
+        })
+    } catch (error) {
+        next(error);
+    }
+})
+exp.getShopCategories = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const categories = await getShopCategories();
+        if (categories.lenght < 1) {
+            throw new NotFoundError("No categories");
+        }
+        return res.status(200).json({
+            categories,
+            message: "Categories fetched successfully"
         })
     } catch (error) {
         next(error);
