@@ -24,6 +24,7 @@ const pathshalaRoutes=require("./Routes/pathshalaRoutes.js");
 const eventsRoutes=require("./Routes/eventsRoutes.js");
 const creatorRoutes=require("./Routes/creatorRoutes.js");
 const otherRoutes=require("./Routes/otherRoutes.js");
+const channelRoutes=require("./Routes/channelRoutes.js");
 const port = process.env.PORT || 8082;
 app.use(express.json());
 app.use(cors());
@@ -41,6 +42,7 @@ app.use("/pathshala",pathshalaRoutes);
 app.use("/events",eventsRoutes);
 app.use("/creator",creatorRoutes);
 app.use("/others",otherRoutes);
+app.use("/channels",channelRoutes);
 app.listen(port, () => {
     console.log(`listening on port:${port}`);
 })

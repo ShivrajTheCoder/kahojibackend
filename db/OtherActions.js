@@ -19,8 +19,20 @@ const getBanner = async () => {
     }
 };
 
+const mostPlayedAudio=async()=>{
+    try {
+        const query = 'SELECT * FROM audios ORDER BY number_of_views DESC LIMIT 4';
+        const rows = await queryPromise(query);
+        return rows;
+    } catch (error) {
+        console.error('Error fetching banner:', error);
+        throw error;
+    }
+}
+
 
 
 module.exports = {
-    getBanner
+    getBanner,
+    mostPlayedAudio
 };
