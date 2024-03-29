@@ -33,7 +33,20 @@ const getPodcastById = async (id) => {
     }
 }
 
+const getPodcastsByCategory = async (category_id) => {
+    try {
+        const query = 'SELECT * FROM podcasts WHERE category_id = ?';
+        const rows = await queryPromise(query, [category_id]);
+        return rows;
+    } catch (error) {
+        console.error('Error fetching podcasts by category:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     getPodcasts,
-    getPodcastById 
+    getPodcastById,
+    getPodcastsByCategory // Add getPodcastsByCategory to exports
 };
+
