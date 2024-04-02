@@ -44,8 +44,26 @@ const getChannelsByCategory = async (categoryId) => {
     }
 };
 
+const createChannel = async (channelData) => {
+    try {
+        const query = 'INSERT INTO channels (name, description, creatorid) VALUES (?, ?, ?)';
+        const result = await queryPromise(query, [
+            channelData.name,
+            channelData.description,
+            channelData.creatorid,
+        ]);
+        // Return the ID of the newly inserted row
+        return result.insertId;
+    } catch (error) {
+        console.error('Error creating channel:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     getAllChannels,
     getChannelById,
-    getChannelsByCategory
+    getChannelsByCategory,
+    createChannel
 };
+

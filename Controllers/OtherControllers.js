@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
-const { getBanner, mostPlayedAudio } = require("../db/OtherActions");
+const { getBanner, mostPlayedAudio, getNotificationsByDate } = require("../db/OtherActions");
 
 const exp = module.exports;
 
@@ -33,3 +33,17 @@ exp.mostPlayedAudio = RouterAsyncErrorHandler(async (req, res, next) => {
     }
 });
 
+exp.getNotificationsController = async (req, res, next) => {
+    try {
+        const notifications = await getNotificationsByDate();
+        if (notifications.length < 1) {
+            throw new NotFoundError("No notifications found");
+        }
+        return res.status(200).json({
+            notifications,
+            message: "Notifications fetched successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+};

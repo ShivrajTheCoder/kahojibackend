@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
-const { NotFoundError } = require("../Utils/CustomErrors");
-const { getAllChannels, getChannelById, getChannelsByCategory } = require("../db/ChannelActions");
+const { NotFoundError, BadRequestError } = require("../Utils/CustomErrors");
+const { getAllChannels, getChannelById, getChannelsByCategory, createChannel } = require("../db/ChannelActions");
 
 const exp = module.exports;
 
@@ -45,6 +45,28 @@ exp.getChannelsByCategory = RouterAsyncErrorHandler(async (req, res, next) => {
         return res.status(200).json({
             channels,
             message: "Channels fetched successfully by category"
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+exp.createChannel = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const { name, description, creatorid, isApproved } = req.body;
+        
+        // Check if required fields are provided
+        if (!name || !description || !creatorid) {
+            throw new Error("Name, description, and creatorid are required");
+        }
+        
+        // Create channel
+        const channelId = await createChannel({ name, description, creatorid, isApproved });
+        
+        // Return success response
+        return res.status(201).json({
+            channelId,
+            message: "Channel created successfully"
         });
     } catch (error) {
         next(error);

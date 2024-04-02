@@ -6,12 +6,12 @@ const exp=module.exports
 
 exp.getAllEvents=RouterAsyncErrorHandler(async(req,res,next)=>{
     try {
-        const ebooks=await getAllEvents();
-        if(ebooks.lenght<1){
+        const events=await getAllEvents();
+        if(events.lenght<1){
          throw new NotFoundError("No audio book found");
         }
         return res.status(200).json({
-            ebooks,
+            events,
             message:"Audio book fetched successfully"
         })
     } catch (error) {
@@ -22,12 +22,12 @@ exp.getAllEvents=RouterAsyncErrorHandler(async(req,res,next)=>{
 exp.getEventsById=RouterAsyncErrorHandler(async(req,res,next)=>{
     try {
         const {id}=req.params;
-        const ebook=await getEventById(id);
-        if(!ebook){
-            throw new NotFoundError("ebook not found");
+        const event=await getEventById(id);
+        if(!event){
+            throw new NotFoundError("event not found");
         }
         return res.status(200).json({
-            ebook,
+            event,
             message:"Audio Books fetched successfully"
         })
     }
