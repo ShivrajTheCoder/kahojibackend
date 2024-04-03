@@ -26,6 +26,7 @@ const creatorRoutes=require("./Routes/creatorRoutes.js");
 const otherRoutes=require("./Routes/otherRoutes.js");
 const channelRoutes=require("./Routes/channelRoutes.js");
 const interestRoutes=require("./Routes/interestRoutes.js");
+const liveRoutes=require("./Routes/liveRoutes.js");
 const port = process.env.PORT || 8082;
 app.use(express.json());
 app.use(cors());
@@ -45,6 +46,7 @@ app.use("/creator",creatorRoutes);
 app.use("/others",otherRoutes);
 app.use("/channels",channelRoutes);
 app.use("/interests",interestRoutes);
+app.use("/lives",liveRoutes);
 app.listen(port, () => {
     console.log(`listening on port:${port}`);
 })
