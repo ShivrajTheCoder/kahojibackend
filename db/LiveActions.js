@@ -10,7 +10,7 @@ const queryPromise = promisify(pool.query).bind(pool);
 
 const getAllLiveEvents = async () => {
     try {
-        const query = 'SELECT * FROM live';
+        const query = 'SELECT * FROM live WHERE approved = true';
         const rows = await queryPromise(query);
         return rows;
     } catch (error) {
@@ -18,9 +18,10 @@ const getAllLiveEvents = async () => {
         throw error;
     }
 };
+
 const getLiveEventById = async (id) => {
     try {
-        const query = 'SELECT * FROM live WHERE id = ?';
+        const query = 'SELECT * FROM live WHERE id = ? AND approved = true';
         const rows = await queryPromise(query, [id]);
         if (!rows || rows.length < 1) {
             return null;
@@ -31,9 +32,10 @@ const getLiveEventById = async (id) => {
         throw error;
     }
 };
+
 const getTop5LiveEvents = async () => {
     try {
-        const query = 'SELECT * FROM live ORDER BY end_time DESC LIMIT 5';
+        const query = 'SELECT * FROM live WHERE approved = true ORDER BY end_time DESC LIMIT 5';
         const rows = await queryPromise(query);
         return rows;
     } catch (error) {
@@ -44,7 +46,7 @@ const getTop5LiveEvents = async () => {
 
 const getLiveEventsByInterest = async (interestId) => {
     try {
-        const query = 'SELECT * FROM live WHERE interest = ?';
+        const query = 'SELECT * FROM live WHERE interest = ? AND approved = true';
         const rows = await queryPromise(query, [interestId]);
         return rows;
     } catch (error) {
@@ -57,5 +59,5 @@ module.exports = {
     getAllLiveEvents,
     getLiveEventById,
     getTop5LiveEvents,
-    getLiveEventsByInterest // Add the new action here
+    getLiveEventsByInterest
 };
