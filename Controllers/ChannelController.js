@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError, BadRequestError } = require("../Utils/CustomErrors");
-const { getAllChannels, getChannelById, getChannelsByCategory, createChannel } = require("../db/ChannelActions");
+const { getAllChannels, getChannelById, getChannelsByCategory, createChannel, getChannelsByCreatorId } = require("../db/ChannelActions");
 
 const exp = module.exports;
 
@@ -57,7 +57,7 @@ exp.createChannel = RouterAsyncErrorHandler(async (req, res, next) => {
         
         // Check if required fields are provided
         if (!name || !description || !creatorid) {
-            throw new Error("Name, description, and creatorid are required");
+            throw new BadRequestError("Name, description, and creatorid are required");
         }
         
         // Create channel
@@ -67,6 +67,22 @@ exp.createChannel = RouterAsyncErrorHandler(async (req, res, next) => {
         return res.status(201).json({
             channelId,
             message: "Channel created successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+exp.getChannelsByCreatorId = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const { creatorid } = req.params;
+        const channels = await getChannelsByCreatorId(creatorid);
+        if (channels.length < 1) {
+            throw new NotFoundError("No channels found for the provided creatorid");
+        }
+        return res.status(200).json({
+            channels,
+            message: "Channels fetched successfully by creatorid"
         });
     } catch (error) {
         next(error);

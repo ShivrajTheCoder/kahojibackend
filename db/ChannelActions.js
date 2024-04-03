@@ -60,10 +60,22 @@ const createChannel = async (channelData) => {
     }
 };
 
+const getChannelsByCreatorId = async (creatorid) => {
+    try {
+        const query = 'SELECT * FROM channels WHERE creatorid = ?';
+        const rows = await queryPromise(query, [creatorid]);
+        return rows;
+    } catch (error) {
+        console.error('Error fetching channels by creatorid:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     getAllChannels,
     getChannelById,
     getChannelsByCategory,
-    createChannel
+    createChannel,
+    getChannelsByCreatorId
 };
 
