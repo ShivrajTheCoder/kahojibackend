@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
-const { getPathshala, getPathshalaById } = require("../db/pathShalaActions");
+const { getPathshala, getPathshalaById } = require("../db/PathshalaActions");
 
 const exp = module.exports;
 
