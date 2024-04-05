@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError, BadRequestError } = require("../Utils/CustomErrors");
-const { getAllChannels, getChannelById, getChannelsByCategory, createChannel, getChannelsByCreatorId } = require("../db/ChannelActions");
+const { getAllChannels, getChannelById, getChannelsByCategory, createChannel, getChannelsByCreatorId, getChannelsByInterests } = require("../db/ChannelActions");
 
 const exp = module.exports;
 
@@ -35,10 +35,10 @@ exp.getChannelById = RouterAsyncErrorHandler(async (req, res, next) => {
     }
 });
 
-exp.getChannelsByCategory = RouterAsyncErrorHandler(async (req, res, next) => {
+exp.getChannelsByInterests = RouterAsyncErrorHandler(async (req, res, next) => {
     try {
-        const { categoryId } = req.params;
-        const channels = await getChannelsByCategory(categoryId);
+        const { interestId } = req.params;
+        const channels = await getChannelsByInterests(interestId);
         if (channels.length < 1) {
             throw new NotFoundError("No channels found for the provided category");
         }

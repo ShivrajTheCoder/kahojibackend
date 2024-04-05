@@ -10,7 +10,7 @@ const queryPromise = promisify(pool.query).bind(pool);
 
 const getAllChannels = async () => {
     try {
-        const query = 'SELECT * FROM channels WHERE isApproved = 1';
+        const query = 'SELECT * FROM channels';
         const rows = await queryPromise(query);
         return rows;
     } catch (error) {
@@ -21,7 +21,7 @@ const getAllChannels = async () => {
 
 const getChannelById = async (id) => {
     try {
-        const query = 'SELECT * FROM channels WHERE id = ? AND isApproved = 1';
+        const query = 'SELECT * FROM channels WHERE id = ? ';
         const rows = await queryPromise(query, [id]);
         if (!rows || rows.length < 1) {
             return null;
@@ -33,10 +33,10 @@ const getChannelById = async (id) => {
     }
 };
 
-const getChannelsByCategory = async (categoryId) => {
+const getChannelsByInterests = async (interestId) => {
     try {
-        const query = 'SELECT * FROM channels WHERE category_id = ? AND isApproved = 1';
-        const rows = await queryPromise(query, [categoryId]);
+        const query = 'SELECT * FROM channels WHERE interest_id = ?';
+        const rows = await queryPromise(query, [interestId]);
         return rows;
     } catch (error) {
         console.error('Error fetching approved channels by category:', error);
@@ -46,11 +46,11 @@ const getChannelsByCategory = async (categoryId) => {
 
 const createChannel = async (channelData) => {
     try {
-        const query = 'INSERT INTO channels (name, description, creatorid, isApproved) VALUES (?, ?, ?, 1)';
+        const query = 'INSERT INTO channels (name, description,interest_id) VALUES (?, ?, ?, 1)';
         const result = await queryPromise(query, [
             channelData.name,
             channelData.description,
-            channelData.creatorid,
+            channelData.interest_id,
         ]);
         // Return the ID of the newly inserted row
         return result.insertId;
@@ -60,24 +60,24 @@ const createChannel = async (channelData) => {
     }
 };
 
-const getChannelsByCreatorId = async (creatorid) => {
+const getChannelsByCreatorId = async (owner_id) => {
     try {
-        const query = 'SELECT * FROM channels WHERE creatorid = ? AND isApproved = 1';
-        const rows = await queryPromise(query, [creatorid]);
+        const query = 'SELECT * FROM channels WHERE owner_id = ? ';
+        const rows = await queryPromise(query, [owner_id]);
         return rows;
     } catch (error) {
-        console.error('Error fetching approved channels by creatorid:', error);
+        console.error('Error fetching approved channels by owner_id:', error);
         throw error;
     }
 };
 
-const getAllCreatorChannels = async (creatorid) => {
+const getAllCreatorChannels = async (owner_id) => {
     try {
-        const query = 'SELECT * FROM channels WHERE creatorid = ?';
-        const rows = await queryPromise(query, [creatorid]);
+        const query = 'SELECT * FROM channels WHERE owner_id = ?';
+        const rows = await queryPromise(query, [owner_id]);
         return rows;
     } catch (error) {
-        console.error('Error fetching channels by creatorid:', error);
+        console.error('Error fetching channels by owner_id:', error);
         throw error;
     }
 };
@@ -85,7 +85,7 @@ const getAllCreatorChannels = async (creatorid) => {
 module.exports = {
     getAllChannels,
     getChannelById,
-    getChannelsByCategory,
+    getChannelsByInterests,
     createChannel,
     getChannelsByCreatorId,
     getAllCreatorChannels
