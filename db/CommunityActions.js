@@ -10,7 +10,7 @@ const queryPromise = promisify(pool.query).bind(pool);
 
 const getCommunity = async () => {
     try {
-        const query = 'SELECT * FROM community';
+        const query = 'SELECT * FROM communities';
         const rows = await queryPromise(query);
         return rows;
     } catch (error) {
@@ -21,7 +21,7 @@ const getCommunity = async () => {
 
 const getCommunityById = async (id) => {
     try {
-        const query = 'SELECT * FROM community WHERE id = ?';
+        const query = 'SELECT * FROM communities WHERE id = ?';
         const rows = await queryPromise(query, [id]);
         if (!rows || rows.length < 1) {
             return null;
@@ -33,7 +33,19 @@ const getCommunityById = async (id) => {
     }
 }
 
+const addCommunity = async (community_name, description, interestId) => {
+    try {
+        const query = 'INSERT INTO communities (community_name, description, interest_id) VALUES (?, ?, ?)';
+        const result = await queryPromise(query, [community_name, description, interestId]);
+        return result.insertId; // Return the ID of the newly inserted community
+    } catch (error) {
+        console.error('Error adding community:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     getCommunity,
-    getCommunityById
+    getCommunityById,
+    addCommunity
 };
