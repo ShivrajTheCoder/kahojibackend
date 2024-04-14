@@ -32,8 +32,18 @@ const getEbooksById = async (id) => {
         throw error;
     }
 }
-
+const addEbook = async (categoryId, title, description, ebookPath, coverPath, isFree) => {
+    try {
+        const query = 'INSERT INTO ebooks (category_id, title, description, ebook_path, cover_path, isFree) VALUES (?, ?, ?, ?, ?, ?)';
+        const result = await queryPromise(query, [categoryId, title, description, ebookPath, coverPath, isFree]);
+        return result.insertId; // Return the ID of the newly inserted ebook
+    } catch (error) {
+        console.error('Error adding ebook:', error);
+        throw error;
+    }
+};
 module.exports = {
     getEbooks,
-    getEbooksById
+    getEbooksById,
+    addEbook
 };

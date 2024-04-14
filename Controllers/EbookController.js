@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
-const { getEbooks, getEbooksById } = require("../db/EbooksActions");
+const { getEbooks, getEbooksById, addEbook } = require("../db/EbooksActions");
 
 const exp=module.exports
 
@@ -35,3 +35,30 @@ exp.getEbookById=RouterAsyncErrorHandler(async(req,res,next)=>{
         next(error);
     }
 })
+
+exp.addEbook = RouterAsyncErrorHandler(async (req, res, next) => {
+    const { categoryId, title, description,  isFree=1 } = req.body;
+    // console.log(req.files);
+    if(!req.files){
+        return res.status(400).json({message:"files not found"})
+    }
+    const {book,cover}=req.files;
+    if(!book || !cover){
+        return res.status(400).json({message:"files not found"})
+    }
+    const bookPath="/images/ebooks/"+book[0].filename;
+    const coverPath="/images/ebooks/"+cover[0].filename;
+    try {
+        if (!categoryId || !title || !description || !bookPath || !coverPath || !isFree) {
+            return res.status(400).json({message:"All fields are required"});
+        }
+        const newEbookId = await addEbook(categoryId, title, description, bookPath, coverPath, isFree);
+        return res.status(201).json({
+            id: newEbookId,
+            message: "Ebook added successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+    
+});
