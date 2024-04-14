@@ -14,7 +14,7 @@ const getShop = async () => {
         const rows = await queryPromise(query);
         return rows;
     } catch (error) {
-        console.error('Error fetching videos:', error);
+        console.error('Error fetching products:', error);
         throw error;
     }
 };
@@ -28,11 +28,10 @@ const getShopById = async (id) => {
         }
         return rows[0];
     } catch (error) {
-        console.error('Error fetching video by id:', error);
+        console.error('Error fetching product by id:', error);
         throw error;
     }
 }
-
 
 const placeOrder = async (userId, itemId) => {
     try {
@@ -46,7 +45,6 @@ const placeOrder = async (userId, itemId) => {
     }
 }
 
-
 const getUserOrders = async (userId) => {
     try {
         const query = 'SELECT * FROM orders WHERE userid = ?';
@@ -58,7 +56,7 @@ const getUserOrders = async (userId) => {
     }
 }
 
-const getShopCategories= async () => {
+const getShopCategories = async () => {
     try {
         const query = 'SELECT * FROM shop_category';
         const rows = await queryPromise(query);
@@ -69,10 +67,22 @@ const getShopCategories= async () => {
     }
 };
 
+const addProduct = async (photoPath, itemName, itemPrice, itemDescription, categoryId) => {
+    try {
+        const query = 'INSERT INTO shop (photo_path, item_name, item_price, item_description, category_id) VALUES (?, ?, ?, ?, ?)';
+        const result = await queryPromise(query, [photoPath, itemName, itemPrice, itemDescription, categoryId]);
+        return result.insertId; // Return the ID of the inserted product
+    } catch (error) {
+        console.error('Error adding product:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     getShop,
     getShopById,
     placeOrder,
     getUserOrders,
-    getShopCategories
+    getShopCategories,
+    addProduct
 };

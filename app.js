@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const path = require('path');
 dotenv.config();
 const mysql = require('mysql');
 const app = express();
@@ -9,6 +10,7 @@ const connection = mysql.createConnection({
     password: '', // Change this to your MySQL password
     database: 'rrbeatlemeco_db' // Change this to your MySQL database name
 });
+const baseUploadsPath = path.join(__dirname, 'uploads');
 const cors=require("cors");
 const videoRoutes=require('./Routes/videoRoutes.js');
 const audioBookRoutes=require("./Routes/audioBookRoutes.js")
@@ -30,6 +32,11 @@ const liveRoutes=require("./Routes/liveRoutes.js");
 const port = process.env.PORT || 8082;
 app.use(express.json());
 app.use(cors());
+
+// image folders
+app.use('/images/shop', express.static(path.join(baseUploadsPath, 'shop')));
+
+//routes
 app.use("/videos",videoRoutes);
 app.use("/audiobooks",audioBookRoutes);
 app.use("/category",categoryRoutes);

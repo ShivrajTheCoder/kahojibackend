@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
-const { getShop, getShopById, placeOrder, getUserOrders, getShopCategories } = require("../db/ShopActions");
+const { getShop, getShopById, placeOrder, getUserOrders, getShopCategories, addProduct } = require("../db/ShopActions");
 const { getUserById } = require("../db/UserActions");
 
 const exp = module.exports
@@ -92,3 +92,34 @@ exp.getAllUserOrders=RouterAsyncErrorHandler(async(req,res,next)=>{
         next(error);
     }
 })
+
+exp.addProduct = RouterAsyncErrorHandler(async (req, res, next) => {
+    // console.log(req.files);
+    if(!req.files){
+        return res.status(400).json({
+            message:"No file uploaded"
+        })
+    }
+    const {image}=req.files;
+    const photoPath="/images/shop/"+image[0].filename;
+    console.log(photoPath);
+    const {  productName, price,description, categoryId } = req.body;
+    try {
+        // Check if all required fields are provided
+        if (!photoPath || !productName || !price || !description || !categoryId) {
+            throw new Error("Required fields are missing");
+        }
+        
+        // Call the function to add the product
+        const productId = await addProduct(photoPath, productName, price, description, categoryId);
+
+        return res.status(200).json({
+            productId,
+            message: "Product added successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+module.exports = exp;
