@@ -44,9 +44,21 @@ const getPodcastsByCategory = async (category_id) => {
     }
 };
 
+const addPodcast = async (authorId, name, description, mediaLink, isVideo, categoryId, thumbnail) => {
+    try {
+        const query = 'INSERT INTO podcasts (authorId, name, description, media_link, isVideo, category_id, thumbnail) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        const result = await queryPromise(query, [authorId, name, description, mediaLink, isVideo, categoryId, thumbnail]);
+        console.log(result);
+        return result.insertId; // Return the ID of the inserted podcast
+    } catch (error) {
+        console.error('Error adding podcast:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     getPodcasts,
     getPodcastById,
-    getPodcastsByCategory // Add getPodcastsByCategory to exports
+    getPodcastsByCategory,
+    addPodcast // Add the addPodcast function to exports
 };
-

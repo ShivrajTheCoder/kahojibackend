@@ -35,8 +35,8 @@ app.use(cors());
 
 // image folders
 app.use('/images/shop', express.static(path.join(baseUploadsPath, 'shop')));
+app.use('/images/podcasts', express.static(path.join(baseUploadsPath, 'podcasts')));
 
-//routes
 app.use("/videos",videoRoutes);
 app.use("/audiobooks",audioBookRoutes);
 app.use("/category",categoryRoutes);

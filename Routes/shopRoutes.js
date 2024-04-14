@@ -1,8 +1,8 @@
 const express = require('express')
 const { getShop, getShopById, placeOrder, getAllUserOrders, getShopCategories, addProduct } = require('../Controllers/ShopController')
-const multer = require('multer');
 const router = express.Router()
 
+const multer = require('multer');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/shop') // Uploads folder where files will be stored
