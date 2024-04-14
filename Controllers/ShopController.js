@@ -102,7 +102,7 @@ exp.addProduct = RouterAsyncErrorHandler(async (req, res, next) => {
     }
     const {image}=req.files;
     const photoPath="/images/shop/"+image[0].filename;
-    console.log(photoPath);
+    // console.log(photoPath);
     const {  productName, price,description, categoryId } = req.body;
     try {
         // Check if all required fields are provided
