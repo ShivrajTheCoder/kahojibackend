@@ -39,6 +39,7 @@ app.use('/images/podcasts', express.static(path.join(baseUploadsPath, 'podcasts'
 app.use('/images/ebooks', express.static(path.join(baseUploadsPath, 'ebooks')));
 app.use('/images/audiobooks', express.static(path.join(baseUploadsPath, 'audiobooks')));
 app.use('/images/ebooks', express.static(path.join(baseUploadsPath, 'ebooks')));
+app.use('/images/events', express.static(path.join(baseUploadsPath, 'events')));
 
 app.use("/videos",videoRoutes);
 app.use("/audiobooks",audioBookRoutes);
