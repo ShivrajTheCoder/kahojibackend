@@ -32,8 +32,17 @@ const getAudioBooksById = async (id) => {
         throw error;
     }
 }
+const addAudioBook = async (title, description, audioPath, coverPath, categoryId, isFree, authorId) => {
+    try {
+        const query = 'INSERT INTO audio_books (title, description, audio_path, cover_path, category_id, isFree, authorId) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        const result = await queryPromise(query, [title, description, audioPath, coverPath, categoryId, isFree, authorId]);
+        return result.insertId; // Return the ID of the inserted audio book
+    } catch (error) {
+        console.error('Error adding audio book:', error);
+        throw error;
+    }
+};
 
 module.exports = {
-    getAudioBooks,
-    getAudioBooksById
+    addAudioBook
 };

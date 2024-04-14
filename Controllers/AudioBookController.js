@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
-const { getAudioBooks, getAudioBooksById } = require("../db/AudioBookActions");
+const { getAudioBooks, getAudioBooksById, addAudioBook } = require("../db/AudioBookActions");
 
 const exp=module.exports
 
@@ -35,3 +35,29 @@ exp.getAudioBooksById=RouterAsyncErrorHandler(async(req,res,next)=>{
         next(error);
     }
 })
+
+exp.addAudioBook = RouterAsyncErrorHandler(async (req, res, next) => {
+    const { title, description,  categoryId, isFree=true, authorId=1 } = req.body;
+    // console.log(req.files);
+    if(!req.files){
+        return res.status(400).message("All fields are required");
+    }
+    const {audio,cover}=req.files;
+    if(!audio || !cover){
+        return res.status(400).message("All fields are required");
+    }
+    const audioPath="/images/audiobooks/"+audio[0].filename;
+    const coverPath="/images/audiobooks/"+cover[0].filename;
+    try {
+        if (!title || !description || !audioPath || !coverPath || !categoryId || !isFree || !authorId) {
+            return res.status(400).message("All fields are required");
+        }
+        const newAudioBookId = await addAudioBook(title, description, audioPath, coverPath, categoryId, isFree, authorId);
+        return res.status(201).json({
+            id: newAudioBookId,
+            message: "Audio book added successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});

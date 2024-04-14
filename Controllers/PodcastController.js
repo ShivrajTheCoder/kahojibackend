@@ -54,7 +54,7 @@ exp.getPodcastsByCategoryId = RouterAsyncErrorHandler(async (req, res, next) => 
 
 exp.addPodcast = RouterAsyncErrorHandler(async (req, res, next) => {
     const { authorId, name, description,  isVideo, categoryId } = req.body;
-    console.log(req.files);
+    // console.log(req.files);
     if(!req.files){
         return res.status(400).json({
             message:"No file uploaded"
