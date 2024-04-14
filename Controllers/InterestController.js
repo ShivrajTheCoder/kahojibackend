@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
-const { getAllInterests, getInterestById } = require("../db/InterestActions");
+const { getAllInterests, getInterestById, addInterest } = require("../db/InterestActions");
 
 const exp = module.exports;
 
@@ -34,3 +34,23 @@ exp.getInterestById = RouterAsyncErrorHandler(async (req, res, next) => {
         next(error);
     }
 });
+
+exp.addInterest = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const { name, description } = req.body;
+        if (!name || !description) {
+            return res.status(400).json({
+                message: "Name and description are required"
+            });
+        }
+        const interestId = await addInterest(name, description);
+        return res.status(201).json({
+            interestId,
+            message: "Interest added successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+module.exports = exp;

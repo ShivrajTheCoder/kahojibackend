@@ -33,7 +33,19 @@ const getInterestById = async (id) => {
     }
 };
 
+const addInterest = async (name, description) => {
+    try {
+        const query = 'INSERT INTO interests (name, description) VALUES (?, ?)';
+        const result = await queryPromise(query, [name, description]);
+        return result.insertId; // Return the ID of the inserted interest
+    } catch (error) {
+        console.error('Error adding interest:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     getAllInterests,
-    getInterestById
+    getInterestById,
+    addInterest
 };
