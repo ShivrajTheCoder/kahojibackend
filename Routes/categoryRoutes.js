@@ -1,10 +1,24 @@
-const express = require('express')
-const { getAllCategories, getCategoryById, getAllOriginals, getOriginalById } = require('../Controllers/CategoryController')
+const express = require('express');
+const { getAllCategories, getCategoryById, getAllOriginals, getOriginalById, addCategory, addOriginalCategory } = require('../Controllers/CategoryController');
 
-const router = express.Router()
+const router = express.Router();
 
-router.route("/getallcategories").get(getAllCategories)
-router.route("/getalloriginals").get(getAllOriginals)
-router.route("/getcategorybyid/:id").get(getCategoryById)
-router.route("/getalloriginalsbyid/:id").get(getOriginalById)
-module.exports = router
+// Get all categories
+router.route("/getallcategories").get(getAllCategories);
+
+// Get all originals
+router.route("/getalloriginals").get(getAllOriginals);
+
+// Get category by ID
+router.route("/getcategorybyid/:id").get(getCategoryById);
+
+// Get original by ID
+router.route("/getoriginalbyid/:id").get(getOriginalById);
+
+// Add a new category
+router.route("/addcategory").post(addCategory);
+
+// Add a new original category
+router.route("/addoriginalcategory").post(addOriginalCategory);
+
+module.exports = router;

@@ -57,10 +57,33 @@ const getOriginalCategoriesById = async (id) => {
         throw error;
     }
 }
+const addCategory = async (categoryName) => {
+    try {
+        const query = 'INSERT INTO category (category_name) VALUES (?)';
+        const result = await queryPromise(query, [categoryName]);
+        return result.insertId; // Return the ID of the inserted category
+    } catch (error) {
+        console.error('Error adding category:', error);
+        throw error;
+    }
+};
+
+const addOriginalCategory = async (originalCategoryName) => {
+    try {
+        const query = 'INSERT INTO originals (name) VALUES (?)';
+        const result = await queryPromise(query, [originalCategoryName]);
+        return result.insertId; // Return the ID of the inserted original category
+    } catch (error) {
+        console.error('Error adding original category:', error);
+        throw error;
+    }
+};
 
 module.exports = {
     getCategories,
     getCategoriesById,
     getOriginalCategories,
-    getOriginalCategoriesById
+    getOriginalCategoriesById,
+    addCategory,
+    addOriginalCategory
 };

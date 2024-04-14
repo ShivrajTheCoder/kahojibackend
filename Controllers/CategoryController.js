@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
-const { getCategories, getCategoriesById, getOriginalCategoriesById, getOriginalCategories } = require("../db/CategoryActions");
+const { getCategories, getCategoriesById, getOriginalCategoriesById, getOriginalCategories, addCategory, addOriginalCategory } = require("../db/CategoryActions");
 
 const exp = module.exports;
 
@@ -34,6 +34,7 @@ exp.getCategoryById = RouterAsyncErrorHandler(async (req, res, next) => {
         next(error);
     }
 });
+
 exp.getAllOriginals = RouterAsyncErrorHandler(async (req, res, next) => {
     try {
         const originals = await getOriginalCategories();
@@ -64,4 +65,41 @@ exp.getOriginalById = RouterAsyncErrorHandler(async (req, res, next) => {
         next(error);
     }
 });
+
+exp.addCategory = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const { categoryName } = req.body;
+        if (!categoryName) {
+            return res.status(400).json({
+                message: "Category name is required"
+            });
+        }
+        const categoryId = await addCategory(categoryName);
+        return res.status(201).json({
+            categoryId,
+            message: "Category added successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+exp.addOriginalCategory = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const { originalCategoryName } = req.body;
+        if (!originalCategoryName) {
+            return res.status(400).json({
+                message: "Original category name is required"
+            });
+        }
+        const originalCategoryId = await addOriginalCategory(originalCategoryName);
+        return res.status(201).json({
+            originalCategoryId,
+            message: "Original category added successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = exp;
