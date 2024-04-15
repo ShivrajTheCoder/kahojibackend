@@ -33,7 +33,18 @@ const getPathshalaById = async (id) => {
     }
 }
 
-module.exports = {
-    getPathshala,
-    getPathshalaById
+const addPathshala = async (name, description, mediaFile, isAudio, thumbnail) => {
+    try {
+        const query = 'INSERT INTO pathshala (name, description, media_link, isAudio, thumbnail) VALUES (?, ?, ?, ?, ?)';
+        const result = await queryPromise(query, [name, description, mediaFile, isAudio, thumbnail]);
+        return result.insertId; // Return the ID of the newly inserted pathshala
+    } catch (error) {
+        console.error('Error adding pathshala:', error);
+        throw error;
+    }
 };
+module.exports={
+    getPathshala,
+    getPathshalaById,
+    addPathshala
+}

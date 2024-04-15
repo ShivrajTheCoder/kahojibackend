@@ -43,8 +43,8 @@ exp.addKaryashala = RouterAsyncErrorHandler(async (req, res, next) => {
     if(!thumbnail || !media){
         return res.status(400).json({ error: "All fields are required" });
     }
-    const thumbnailName = "/images/karyashala"+thumbnail[0].filename;
-    const mediaName = "/images/karyashala"+media[0].filename;
+    const thumbnailName = "/images/karyashala/"+thumbnail[0].filename;
+    const mediaName = "/images/karyashala/"+media[0].filename;
     const { type, title, description } = req.body;
     if(!type || !title || !description){
         return res.status(400).json({ error: "All fields are required" });

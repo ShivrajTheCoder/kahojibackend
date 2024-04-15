@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
-const { getPathshala, getPathshalaById } = require("../db/PathshalaActions");
+const { getPathshala, getPathshalaById, addPathshala } = require("../db/PathshalaActions");
 
 const exp = module.exports;
 
@@ -32,6 +32,38 @@ exp.getPathshalaById = RouterAsyncErrorHandler(async (req, res, next) => {
             message: "Pathshala fetched successfully"
         });
     } catch (error) {
+        next(error);
+    }
+});
+exp.addPathshala = RouterAsyncErrorHandler(async (req, res, next) => {
+    if (!req.files) {
+        return res.status(400).json({ error: "All fields are required" });
+    }
+    
+    const { thumbnail, mediaFile } = req.files;
+    if (!thumbnail || !mediaFile) {
+        return res.status(400).json({ error: "All fields are required" });
+    }
+    
+    const thumbnailName = "/images/pathshala/" + thumbnail[0].filename;
+    const mediaFileName = "/files/pathshala/" + mediaFile[0].filename;
+    
+    const { name, description, isAudio } = req.body;
+    if (!name || !description || !isAudio) {
+        return res.status(400).json({ error: "All fields are required" });
+    }
+    
+    try {
+        // Call the addPathshala function from database actions
+        const pathshalaId = await addPathshala(name, description, mediaFileName, isAudio, thumbnailName);
+
+        // Return success response
+        return res.status(201).json({
+            pathshalaId,
+            message: "Pathshala added successfully"
+        });
+    } catch (error) {
+        // Forward error to error handler middleware
         next(error);
     }
 });
