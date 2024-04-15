@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
-const { getAllLiveEvents, getLiveEventById, getTop5LiveEvents, getLiveEventsByInterest } = require("../db/LiveActions");
+const { getAllLiveEvents, getLiveEventById, getTop5LiveEvents, getLiveEventsByInterest, updateLiveEvent } = require("../db/LiveActions");
 
 const exp = module.exports;
 
@@ -66,3 +66,29 @@ exp.getLiveEventsByInterest = RouterAsyncErrorHandler(async (req, res, next) => 
     }
 });
 
+exp.updateLiveEvent = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const { eventId } = req.params;
+        const { startTime, endTime, startDate, approved=true } = req.body;
+
+        // Check if all required fields are provided
+        if (!startTime || !endTime || !startDate || approved === undefined) {
+            throw new Error("All fields are required for updating live event");
+        }
+
+        // Call the updateLiveEvent function from database actions
+        const success = await updateLiveEvent(eventId, startTime, endTime, startDate, approved);
+
+        if (!success) {
+            throw new NotFoundError("Live event not found or unable to update");
+        }
+
+        // Return success response
+        return res.status(200).json({
+            success: true,
+            message: "Live event updated successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});

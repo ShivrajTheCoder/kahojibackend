@@ -54,10 +54,20 @@ const getLiveEventsByInterest = async (interestId) => {
         throw error;
     }
 };
-
+const updateLiveEvent = async (eventId, startTime, endTime, startDate, approved) => {
+    try {
+        const query = 'UPDATE live SET start_time = ?, end_time = ?, start_date = ?, approved = ? WHERE id = ?';
+        const result = await queryPromise(query, [startTime, endTime, startDate, approved, eventId]);
+        return result.affectedRows > 0;
+    } catch (error) {
+        console.error('Error updating live event:', error);
+        throw error;
+    }
+};
 module.exports = {
     getAllLiveEvents,
     getLiveEventById,
     getTop5LiveEvents,
-    getLiveEventsByInterest
+    getLiveEventsByInterest,
+    updateLiveEvent
 };
