@@ -46,8 +46,10 @@ const getPodcastsByCategory = async (category_id) => {
 
 const addPodcast = async (authorId, name, description, mediaLink, isVideo, categoryId, thumbnail) => {
     try {
-        const query = 'INSERT INTO podcasts (authorId, name, description, media_link, isVideo, category_id, thumbnail) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        const result = await queryPromise(query, [authorId, name, description, mediaLink, isVideo, categoryId, thumbnail]);
+        let isApproved = authorId === 1 ? true : false; // Check if authorId is 1
+        
+        const query = 'INSERT INTO podcasts (authorId, name, description, media_link, isVideo, category_id, thumbnail, isApproved) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        const result = await queryPromise(query, [authorId, name, description, mediaLink, isVideo, categoryId, thumbnail, isApproved]);
         console.log(result);
         return result.insertId; // Return the ID of the inserted podcast
     } catch (error) {
@@ -55,6 +57,7 @@ const addPodcast = async (authorId, name, description, mediaLink, isVideo, categ
         throw error;
     }
 };
+
 
 module.exports = {
     getPodcasts,
