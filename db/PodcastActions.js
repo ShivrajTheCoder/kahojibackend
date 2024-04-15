@@ -50,7 +50,7 @@ const addPodcast = async (authorId, name, description, mediaLink, isVideo, categ
         
         const query = 'INSERT INTO podcasts (authorId, name, description, media_link, isVideo, category_id, thumbnail, isApproved) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         const result = await queryPromise(query, [authorId, name, description, mediaLink, isVideo, categoryId, thumbnail, isApproved]);
-        console.log(result);
+        // console.log(result);
         return result.insertId; // Return the ID of the inserted podcast
     } catch (error) {
         console.error('Error adding podcast:', error);

@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
-const { getAllLiveEvents, getLiveEventById, getTop5LiveEvents, getLiveEventsByInterest, updateLiveEvent } = require("../db/LiveActions");
+const { getAllLiveEvents, getLiveEventById, getTop5LiveEvents, getLiveEventsByInterest, updateLiveEvent, addLiveEvent } = require("../db/LiveActions");
 
 const exp = module.exports;
 
@@ -92,3 +92,30 @@ exp.updateLiveEvent = RouterAsyncErrorHandler(async (req, res, next) => {
         next(error);
     }
 });
+
+exp.addLiveEventController = async (req, res, next) => {
+    const { topic, description, start_time, start_date, end_time, interest,owner_id } = req.body;
+    // console.log(req.files,req.body);
+    if(!req.files){
+        return res.status(400).json({ error: "Thumbnail is required" });
+    }
+
+    const {thumbnail} = req.files;
+    if(!thumbnail){
+        return res.status(400).json({ error: "Thumbnail is required" });
+    }
+    const thumbnailPath="images/lives/"+thumbnail[0].filename;
+    console.log(thumbnailPath)
+    if (!topic || !description || !start_time || !start_date || !end_time || !interest || !thumbnailPath || !owner_id) {
+        return res.status(400).json({ error: "All fields are required" });
+    }
+    try {
+        const eventId = await addLiveEvent(topic, description, start_time, start_date, end_time, interest, owner_id,thumbnailPath);
+        return res.status(201).json({
+            eventId,
+            message: "Live event added successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+};

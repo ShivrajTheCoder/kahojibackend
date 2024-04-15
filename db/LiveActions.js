@@ -64,10 +64,26 @@ const updateLiveEvent = async (eventId, startTime, endTime, startDate, approved)
         throw error;
     }
 };
+const addLiveEvent = async (topic, description, startTime, startDate, endTime, interest, ownerId, thumbnail) => {
+    try {
+        // Determine if the owner is 1 to set the approved status
+        const approved = ownerId === 1 ? true : false;
+
+        const query = 'INSERT INTO live (topic, description, start_time, start_date, end_time, interest, owner_id, thumbnail, approved) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        const result = await queryPromise(query, [topic, description, startTime, startDate, endTime, interest, ownerId, thumbnail, approved]);
+        return result.insertId; // Return the ID of the inserted live event
+    } catch (error) {
+        console.error('Error adding live event:', error);
+        throw error;
+    }
+};
+
+
 module.exports = {
     getAllLiveEvents,
     getLiveEventById,
     getTop5LiveEvents,
     getLiveEventsByInterest,
-    updateLiveEvent
+    updateLiveEvent,
+    addLiveEvent
 };
