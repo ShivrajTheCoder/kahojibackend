@@ -32,8 +32,20 @@ const getKaryashalaById = async (id) => {
         throw error;
     }
 }
+const addKaryashala = async (isAudio, fileName, karyashalaName, description, thumbnail) => {
+    try {
+        const query = 'INSERT INTO karyashala (isAudio, file_name, karyashala_name, description, thumbnail) VALUES (?, ?, ?, ?, ?)';
+        const result = await queryPromise(query, [isAudio, fileName, karyashalaName, description, thumbnail]);
+        return result.insertId; // Return the ID of the newly inserted karyashala
+    } catch (error) {
+        console.error('Error adding karyashala:', error);
+        throw error;
+    }
+};
 
 module.exports = {
     getKaryashala,
-    getKaryashalaById
+    getKaryashalaById,
+    addKaryashala
 };
+
