@@ -81,12 +81,24 @@ const getAllCreatorChannels = async (owner_id) => {
         throw error;
     }
 };
-
+const updateChannelApprovalStatus = async (channelId, isApproved) => {
+    try {
+        // Execute an SQL update query to modify the isApproved column for the specified channel
+        const query = 'UPDATE channels SET isApproved = ? WHERE id = ?';
+        await queryPromise(query, [isApproved, channelId]);
+        // console.log(`Channel with ID ${channelId} approval status updated to ${isApproved}`);
+        return true; // Return true to indicate success
+    } catch (error) {
+        // console.error(`Error updating approval status for channel with ID ${channelId}:`, error);
+        throw error; // Throw the error to be caught by the caller
+    }
+};
 module.exports = {
     getAllChannels,
     getChannelById,
     getChannelsByInterests,
     createChannel,
     getChannelsByCreatorId,
-    getAllCreatorChannels
+    getAllCreatorChannels,
+    updateChannelApprovalStatus
 };

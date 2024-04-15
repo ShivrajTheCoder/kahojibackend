@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError, BadRequestError } = require("../Utils/CustomErrors");
-const { getAllChannels, getChannelById, getChannelsByCategory, createChannel, getChannelsByCreatorId, getChannelsByInterests } = require("../db/ChannelActions");
+const { getAllChannels, getChannelById, getChannelsByCategory, createChannel, getChannelsByCreatorId, getChannelsByInterests, updateChannelApprovalStatus } = require("../db/ChannelActions");
 
 const exp = module.exports;
 
@@ -54,15 +54,15 @@ exp.getChannelsByInterests = RouterAsyncErrorHandler(async (req, res, next) => {
 exp.createChannel = RouterAsyncErrorHandler(async (req, res, next) => {
     try {
         const { name, description, creatorid, isApproved } = req.body;
-        
+
         // Check if required fields are provided
         if (!name || !description || !creatorid) {
             throw new BadRequestError("Name, description, and creatorid are required");
         }
-        
+
         // Create channel
         const channelId = await createChannel({ name, description, creatorid, isApproved });
-        
+
         // Return success response
         return res.status(201).json({
             channelId,
@@ -83,6 +83,29 @@ exp.getChannelsByCreatorId = RouterAsyncErrorHandler(async (req, res, next) => {
         return res.status(200).json({
             channels,
             message: "Channels fetched successfully by creatorid"
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+exp.updateChannelApproval = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const { channelId } = req.params;
+        const { isApproved } = req.body;
+
+        // Check if required fields are provided
+        if (!isApproved || !channelId) {
+            return res.status(400).json({
+                message:"Bad request, all fields are mandatory"
+            })
+        }
+
+        // Update channel approval status
+        await updateChannelApprovalStatus(channelId, isApproved);
+
+        // Return success response
+        return res.status(200).json({
+            message: "Channel approval status updated successfully"
         });
     } catch (error) {
         next(error);
