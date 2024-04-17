@@ -105,7 +105,7 @@ exp.addLiveEventController = async (req, res, next) => {
         return res.status(400).json({ error: "Thumbnail is required" });
     }
     const thumbnailPath="images/lives/"+thumbnail[0].filename;
-    console.log(thumbnailPath)
+    // console.log(thumbnailPath)
     if (!topic || !description || !start_time || !start_date || !end_time || !interest || !thumbnailPath || !owner_id) {
         return res.status(400).json({ error: "All fields are required" });
     }

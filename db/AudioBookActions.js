@@ -44,5 +44,7 @@ const addAudioBook = async (title, description, audioPath, coverPath, categoryId
 };
 
 module.exports = {
-    addAudioBook
+    addAudioBook,
+    getAudioBooks,
+    getAudioBooksById
 };
