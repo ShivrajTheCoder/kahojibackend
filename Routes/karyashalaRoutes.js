@@ -1,6 +1,7 @@
 const express = require('express');
 const { getKaryashala, getKaryashalaById, addKaryashala } = require('../Controllers/KaryashalaController');
 const multer = require('multer');
+const adminAuthenticateToken = require('../Middlewares/AdminAuthMiddleware');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/karyashala') // Uploads folder where files will be stored
@@ -18,5 +19,5 @@ const router = express.Router();
 router.route("/getallkaryashala").get(getKaryashala);
 router.route("/getkaryashalabyid/:id").get(getKaryashalaById);
 router.route("/addkaryashala")
-    .post(multipleUpload, addKaryashala)
+    .post(adminAuthenticateToken, multipleUpload, addKaryashala)
 module.exports = router;

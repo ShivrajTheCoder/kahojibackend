@@ -3,6 +3,7 @@ const { getAllEbooks, getEbookById, addEbook } = require('../Controllers/EbookCo
 
 const router = express.Router()
 const multer = require('multer');
+const adminAuthenticateToken = require('../Middlewares/AdminAuthMiddleware');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/ebooks') // Uploads folder where files will be stored
@@ -17,5 +18,5 @@ const upload = multer({ storage: storage })
 const multipleUpload=upload.fields([{name:"book",maxCount:1},{name:"cover",maxCount:1}])
 router.route("/getallebooks").get(getAllEbooks)
 router.route("/getebookbyid/:id").get(getEbookById)
-router.route("/addebook").post(multipleUpload,addEbook)
+router.route("/addebook").post(adminAuthenticateToken, multipleUpload,addEbook)
 module.exports = router

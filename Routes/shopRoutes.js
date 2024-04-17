@@ -3,6 +3,7 @@ const { getShop, getShopById, placeOrder, getAllUserOrders, getShopCategories, a
 const router = express.Router()
 
 const multer = require('multer');
+const adminAuthenticateToken = require('../Middlewares/AdminAuthMiddleware');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/shop') // Uploads folder where files will be stored
@@ -25,6 +26,6 @@ router.route("/getuserorders/:userId")
     .get(getAllUserOrders)
 
 router.route("/addproduct")
-    .post(multipleUpload,addProduct)
+    .post(adminAuthenticateToken, multipleUpload,addProduct)
 
 module.exports = router

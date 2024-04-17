@@ -1,5 +1,6 @@
 const express = require('express');
 const { getAllCategories, getCategoryById, getAllOriginals, getOriginalById, addCategory, addOriginalCategory } = require('../Controllers/CategoryController');
+const adminAuthenticateToken = require('../Middlewares/AdminAuthMiddleware');
 
 const router = express.Router();
 
@@ -16,9 +17,9 @@ router.route("/getcategorybyid/:id").get(getCategoryById);
 router.route("/getoriginalbyid/:id").get(getOriginalById);
 
 // Add a new category
-router.route("/addcategory").post(addCategory);
+router.route("/addcategory").post( adminAuthenticateToken, addCategory);
 
 // Add a new original category
-router.route("/addoriginalcategory").post(addOriginalCategory);
+router.route("/addoriginalcategory").post(adminAuthenticateToken, addOriginalCategory);
 
 module.exports = router;

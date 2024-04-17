@@ -3,6 +3,7 @@ const { getAllEvents, getEventsById, addEvent } = require('../Controllers/Events
 
 const router = express.Router();
 const multer = require('multer');
+const adminAuthenticateToken = require('../Middlewares/AdminAuthMiddleware');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/events') // Uploads folder where files will be stored
@@ -18,5 +19,5 @@ const multipleUpload=upload.fields([{name:"event",maxCount:1}])
 router.route("/getallevents").get(getAllEvents);
 router.route("/geteventbyid/:id").get(getEventsById);
 router.route('/addevent')
-    .post(multipleUpload,addEvent);
+    .post(adminAuthenticateToken, multipleUpload,addEvent);
 module.exports = router;

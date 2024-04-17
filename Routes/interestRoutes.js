@@ -1,5 +1,6 @@
 const express = require('express');
 const { getAllInterests, getInterestById, addInterest } = require('../Controllers/InterestController');
+const adminAuthenticateToken = require('../Middlewares/AdminAuthMiddleware');
 
 const router = express.Router();
 
@@ -10,6 +11,6 @@ router.route("/getallinterests").get(getAllInterests);
 router.route("/getinterestbyid/:id").get(getInterestById);
 
 // Add interest
-router.route("/addinterest").post(addInterest);
+router.route("/addinterest").post(adminAuthenticateToken, addInterest);
 
 module.exports = router;
