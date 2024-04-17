@@ -1,25 +1,25 @@
-exports.RouterAsyncErrorHandler = (middleware) => (req, res, next) => Promise.resolve(middleware(req, res, next)).catch(next)   //resolve controller async errors .
+exports.RouterAsyncErrorHandler = (middleware) => (req, res, next) => Promise.resolve(middleware(req, res, next)).catch(next)
+
 
 exports.ErrorHandlerMiddleware = (error, req, res, next) => {
-    let type = "InternalServerError"
-    let message = "Try again."
-    let path = "unknown"
-
-    if (error.status === 450) {
-        message = error.message
-        type = error.type
-        path = error.path
-    }
+    let type = "InternalServerError";
+    let message = "Something went wrong!";
+    let code = 500; // Assign a default value
 
     if (error.code === 11000) {
-        type = "DuplicateDataError"
-        message = `${Object.values(error.keyValue)[0]} already exists.`
-        path = Object.keys(error.keyPattern)[0]
+        type = "DuplicateDataError";
+        message = `${Object.values(error.keyValue)[0]} already exists.`;
+    } else {
+        type = error.type || type; // Use a default value if error.type is not defined
+        message=error.message||message;
+        code = error.status || code; // Use a default value if error.status is not defined
     }
-    console.log(error);
-    return res.status(400).json({
+
+    console.error(error);
+
+    return res.status(code).json({
         type,
         message,
-        path
-    })
+        error
+    });
 }
