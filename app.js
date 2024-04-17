@@ -12,7 +12,7 @@ const connection = mysql.createConnection({
 });
 const baseUploadsPath = path.join(__dirname, 'uploads');
 const cors=require("cors");
-const videoRoutes=require('./Routes/videoRoutes.js');
+// const videoRoutes=require('./Routes/videoRoutes.js');
 const audioBookRoutes=require("./Routes/audioBookRoutes.js")
 const categoryRoutes=require("./Routes/categoryRoutes.js");
 const ebookRoutes=require("./Routes/eBookRoutes.js");
@@ -45,7 +45,7 @@ app.use('/images/karyashala', express.static(path.join(baseUploadsPath, 'karyash
 app.use('/images/pathshala', express.static(path.join(baseUploadsPath, 'pathshala')));
 app.use('/images/lives', express.static(path.join(baseUploadsPath, 'lives')));
 
-app.use("/videos",videoRoutes);
+// app.use("/videos",videoRoutes);
 app.use("/audiobooks",audioBookRoutes);
 app.use("/category",categoryRoutes);
 app.use("/ebooks",ebookRoutes);
