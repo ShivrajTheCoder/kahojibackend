@@ -1,5 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
+const { getDashboardInfo } = require("../db/AdminActions");
 const { getBanner, mostPlayedAudio, getNotificationsByDate } = require("../db/OtherActions");
 
 const exp = module.exports;
@@ -47,3 +48,22 @@ exp.getNotificationsController = async (req, res, next) => {
         next(error);
     }
 };
+
+exp.getDashInfo = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        // Fetch data from various sources
+        const dashInfo=await getDashboardInfo();
+        if(!dashInfo){
+            return res.status(500).json("Somethign went wrong!");
+        }
+        // Construct the dashboard info object
+        
+        // Return the dashboard info
+        return res.status(200).json({
+            dashInfo,
+            message: "Dashboard info fetched successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});
