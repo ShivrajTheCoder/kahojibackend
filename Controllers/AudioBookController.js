@@ -1,6 +1,7 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
 const { getAudioBooks, getAudioBooksById, addAudioBook } = require("../db/AudioBookActions");
+const { deleteItemById } = require("../db/deleteaction");
 
 const exp=module.exports
 
@@ -56,6 +57,21 @@ exp.addAudioBook = RouterAsyncErrorHandler(async (req, res, next) => {
         return res.status(201).json({
             id: newAudioBookId,
             message: "Audio book added successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+exp.deleteAudioBookById = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const deleted = await deleteItemById("audio_books",id);
+        if (!deleted) {
+            throw new NotFoundError("Audio book not found");
+        }
+        return res.status(200).json({
+            message: "Audio book deleted successfully"
         });
     } catch (error) {
         next(error);

@@ -1,5 +1,5 @@
 const express = require('express')
-const { getAudioBooks, getAudioBooksById, addAudioBook } = require('../Controllers/AudioBookController')
+const { getAudioBooks, getAudioBooksById, addAudioBook, deleteAudioBookById } = require('../Controllers/AudioBookController')
 const router = express.Router()
 const multer = require('multer');
 const adminAuthenticateToken = require('../Middlewares/AdminAuthMiddleware');
@@ -18,4 +18,6 @@ const multipleUpload=upload.fields([{name:"audio",maxCount:1},{name:"cover",maxC
 router.route("/getallaudiobooks").get(getAudioBooks)
 router.route("/getaudiobooksbyid/:id").get(getAudioBooksById)
 router.route("/addaudiobook").post(adminAuthenticateToken,multipleUpload,addAudioBook)
+router.route("/delteaudiobook/:id")
+    .delete(adminAuthenticateToken,deleteAudioBookById);
 module.exports = router
