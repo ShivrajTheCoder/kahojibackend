@@ -21,5 +21,5 @@ router.route("/getallpathshala").get(getPathshala);
 router.route("/getpathshalabyid/:id").get(getPathshalaById);
 router.route("/addpathshala")
     .post(adminAuthenticateToken, multipleUpload, addPathshala)
-router.route("/deleteebook/:id").delete(adminAuthenticateToken, multipleUpload, deletePahtshalaById)
+router.route("/deletepathshala/:id").delete(adminAuthenticateToken, multipleUpload, deletePahtshalaById)
 module.exports = router;

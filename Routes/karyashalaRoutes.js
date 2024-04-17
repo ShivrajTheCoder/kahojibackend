@@ -20,5 +20,5 @@ router.route("/getallkaryashala").get(getKaryashala);
 router.route("/getkaryashalabyid/:id").get(getKaryashalaById);
 router.route("/addkaryashala")
     .post(adminAuthenticateToken, multipleUpload, addKaryashala)
-    router.route("/deletekaryashala/:id").delete(adminAuthenticateToken, multipleUpload,deleteKaryashalaById)
+router.route("/deletekaryashala/:id").delete(adminAuthenticateToken, multipleUpload,deleteKaryashalaById)
 module.exports = router;

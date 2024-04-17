@@ -1,6 +1,7 @@
-const express=require('express')
-const { getPodcasts, getPodcastsById, getPodcastsByCategoryId, addPodcast } = require('../Controllers/PodcastController')
+const express = require('express')
+const { getPodcasts, getPodcastsById, getPodcastsByCategoryId, addPodcast, deletePodcastById } = require('../Controllers/PodcastController')
 const multer = require('multer');
+const adminAuthenticateToken = require('../Middlewares/AdminAuthMiddleware');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/podcasts') // Uploads folder where files will be stored
@@ -12,11 +13,12 @@ const storage = multer.diskStorage({
 });
 // const upload = multer({ dest: 'uploads/' })
 const upload = multer({ storage: storage })
-const multipleUpload=upload.fields([{name:"thumbnail",maxCount:1},{name:"mediaFile",maxCount:1}])
-const router=express.Router()
+const multipleUpload = upload.fields([{ name: "thumbnail", maxCount: 1 }, { name: "mediaFile", maxCount: 1 }])
+const router = express.Router()
 
-router.route("/getallpodcasts").get( getPodcasts)
+router.route("/getallpodcasts").get(getPodcasts)
 router.route("/getpodcastbyid/:id").get(getPodcastsById)
 router.route("/getpodcastsbycategory/:category_id").get(getPodcastsByCategoryId)
-router.route("/uploadpodcast").post(multipleUpload,addPodcast)
-module.exports=router
+router.route("/uploadpodcast").post(multipleUpload, addPodcast)
+router.route("/deletepodcast/:id").delete(adminAuthenticateToken, multipleUpload, deletePodcastById)
+module.exports = router
