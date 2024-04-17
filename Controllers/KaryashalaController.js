@@ -75,3 +75,18 @@ exp.addKaryashala = RouterAsyncErrorHandler(async (req, res, next) => {
         next(error);
     }
 });
+
+exp.deleteKaryashalaById = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const deleted = await deleteItemById("karyashala",id);
+        if (!deleted) {
+            throw new NotFoundError("karyashala not found");
+        }
+        return res.status(200).json({
+            message: "karyashala deleted successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});

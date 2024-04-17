@@ -84,3 +84,17 @@ exp.addPodcast = RouterAsyncErrorHandler(async (req, res, next) => {
         next(error);
     }
 });
+exp.deletePodcastById = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const deleted = await deleteItemById("podcasts",id);
+        if (!deleted) {
+            throw new NotFoundError("podcasts not found");
+        }
+        return res.status(200).json({
+            message: "podcasts deleted successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});

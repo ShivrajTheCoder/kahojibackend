@@ -1,5 +1,5 @@
 const express = require('express');
-const { getKaryashala, getKaryashalaById, addKaryashala } = require('../Controllers/KaryashalaController');
+const { getKaryashala, getKaryashalaById, addKaryashala, deleteKaryashalaById } = require('../Controllers/KaryashalaController');
 const multer = require('multer');
 const adminAuthenticateToken = require('../Middlewares/AdminAuthMiddleware');
 const storage = multer.diskStorage({
@@ -20,4 +20,5 @@ router.route("/getallkaryashala").get(getKaryashala);
 router.route("/getkaryashalabyid/:id").get(getKaryashalaById);
 router.route("/addkaryashala")
     .post(adminAuthenticateToken, multipleUpload, addKaryashala)
+    router.route("/deletekaryashala/:id").delete(adminAuthenticateToken, multipleUpload,deleteKaryashalaById)
 module.exports = router;

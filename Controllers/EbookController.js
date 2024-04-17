@@ -62,3 +62,17 @@ exp.addEbook = RouterAsyncErrorHandler(async (req, res, next) => {
     }
     
 });
+exp.deleteEbookById = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const deleted = await deleteItemById("ebooks",id);
+        if (!deleted) {
+            throw new NotFoundError("ebook not found");
+        }
+        return res.status(200).json({
+            message: "ebook deleted successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});

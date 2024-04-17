@@ -1,5 +1,5 @@
 const express = require('express')
-const { getShop, getShopById, placeOrder, getAllUserOrders, getShopCategories, addProduct } = require('../Controllers/ShopController')
+const { getShop, getShopById, placeOrder, getAllUserOrders, getShopCategories, addProduct, deleteProductById } = require('../Controllers/ShopController')
 const router = express.Router()
 
 const multer = require('multer');
@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 });
 // const upload = multer({ dest: 'uploads/' })
 const upload = multer({ storage: storage })
-const multipleUpload=upload.fields([{name:"image",maxCount:1}])
+const multipleUpload = upload.fields([{ name: "image", maxCount: 1 }])
 router.route("/getshop").get(getShop)
 router.route("/getshopcategories").get(getShopCategories)
 router.route("/getshopbyid/:id").get(getShopById)
@@ -26,6 +26,6 @@ router.route("/getuserorders/:userId")
     .get(getAllUserOrders)
 
 router.route("/addproduct")
-    .post(adminAuthenticateToken, multipleUpload,addProduct)
-
+    .post(adminAuthenticateToken, multipleUpload, addProduct)
+router.route("/deleteproduct/:id").delete(adminAuthenticateToken, multipleUpload, deleteProductById)
 module.exports = router

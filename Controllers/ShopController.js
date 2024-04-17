@@ -121,5 +121,19 @@ exp.addProduct = RouterAsyncErrorHandler(async (req, res, next) => {
         next(error);
     }
 });
+exp.deleteProductById = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const deleted = await deleteItemById("shop",id);
+        if (!deleted) {
+            throw new NotFoundError("product not found");
+        }
+        return res.status(200).json({
+            message: "product deleted successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});
 
 module.exports = exp;

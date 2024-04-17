@@ -1,5 +1,5 @@
 const express = require('express')
-const { getAllEbooks, getEbookById, addEbook } = require('../Controllers/EbookController')
+const { getAllEbooks, getEbookById, addEbook, deleteEbookById } = require('../Controllers/EbookController')
 
 const router = express.Router()
 const multer = require('multer');
@@ -19,4 +19,5 @@ const multipleUpload=upload.fields([{name:"book",maxCount:1},{name:"cover",maxCo
 router.route("/getallebooks").get(getAllEbooks)
 router.route("/getebookbyid/:id").get(getEbookById)
 router.route("/addebook").post(adminAuthenticateToken, multipleUpload,addEbook)
+router.route("/deleteebook/:id").delete(adminAuthenticateToken, multipleUpload,deleteEbookById)
 module.exports = router
