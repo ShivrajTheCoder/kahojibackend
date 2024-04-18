@@ -1,7 +1,7 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
 const { getAllLiveEvents, getLiveEventById, getTop5LiveEvents, getLiveEventsByInterest, updateLiveEvent, addLiveEvent } = require("../db/LiveActions");
-
+const backpath=process.env.HOSTED;
 const exp = module.exports;
 
 exp.getAllLiveEvents = RouterAsyncErrorHandler(async (req, res, next) => {
@@ -104,7 +104,7 @@ exp.addLiveEventController = async (req, res, next) => {
     if(!thumbnail){
         return res.status(400).json({ error: "Thumbnail is required" });
     }
-    const thumbnailPath="images/lives/"+thumbnail[0].filename;
+    const thumbnailPath=backpath+"/images/lives/"+thumbnail[0].filename;
     // console.log(thumbnailPath)
     if (!topic || !description || !start_time || !start_date || !end_time || !interest || !thumbnailPath || !owner_id) {
         return res.status(400).json({ error: "All fields are required" });

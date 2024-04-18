@@ -2,7 +2,7 @@ const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddlewa
 const { NotFoundError } = require("../Utils/CustomErrors");
 const { getKaryashala, getKaryashalaById, addKaryashala } = require("../db/KaryashalaActions");
 const { deleteItemById } = require("../db/deleteaction");
-
+const backpath=process.env.HOSTED;
 const exp = module.exports;
 
 exp.getKaryashala = RouterAsyncErrorHandler(async (req, res, next) => {
@@ -44,8 +44,8 @@ exp.addKaryashala = RouterAsyncErrorHandler(async (req, res, next) => {
     if(!thumbnail || !media){
         return res.status(400).json({ error: "All fields are required" });
     }
-    const thumbnailName = "/images/karyashala/"+thumbnail[0].filename;
-    const mediaName = "/images/karyashala/"+media[0].filename;
+    const thumbnailName = backpath+"/images/karyashala/"+thumbnail[0].filename;
+    const mediaName = backpath+"/images/karyashala/"+media[0].filename;
     const { type, title, description } = req.body;
     if(!type || !title || !description){
         return res.status(400).json({ error: "All fields are required" });
@@ -54,7 +54,7 @@ exp.addKaryashala = RouterAsyncErrorHandler(async (req, res, next) => {
     if(type !== "audio"){
         isAudio=false;
     }
-    console.log(req.body);
+    // console.log(req.body);
     
     try {
         

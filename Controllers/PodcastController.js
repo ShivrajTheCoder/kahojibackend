@@ -2,7 +2,7 @@ const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddlewa
 const { NotFoundError } = require("../Utils/CustomErrors");
 const { getPodcasts, getPodcastById, getPodcastsByCategory, addPodcast } = require("../db/PodcastActions");
 const { deleteItemById } = require("../db/deleteaction");
-
+const backpath=process.env.HOSTED;
 const exp = module.exports
 
 exp.getPodcasts = RouterAsyncErrorHandler(async (req, res, next) => {
@@ -67,8 +67,8 @@ exp.addPodcast = RouterAsyncErrorHandler(async (req, res, next) => {
             message:"All fields are required"
         })
     }
-    const thumbnailPath="/images/podcasts/"+thumbnail[0].filename;
-    const mediaFilePath="/images/podcasts/"+mediaFile[0].filename;
+    const thumbnailPath=backpath+"/images/podcasts/"+thumbnail[0].filename;
+    const mediaFilePath=backpath+"/images/podcasts/"+mediaFile[0].filename;
     if (!authorId || !name || !description || !thumbnailPath || !isVideo || !categoryId || !mediaFilePath) {
         return res.status(400).json({
             message:"All fields are required"

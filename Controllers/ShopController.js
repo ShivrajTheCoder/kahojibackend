@@ -2,7 +2,7 @@ const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddlewa
 const { NotFoundError } = require("../Utils/CustomErrors");
 const { getShop, getShopById, placeOrder, getUserOrders, getShopCategories, addProduct } = require("../db/ShopActions");
 const { getUserById } = require("../db/UserActions");
-
+const backpath=process.env.HOSTED;
 const exp = module.exports
 
 exp.getShop = RouterAsyncErrorHandler(async (req, res, next) => {
@@ -101,7 +101,7 @@ exp.addProduct = RouterAsyncErrorHandler(async (req, res, next) => {
         })
     }
     const {image}=req.files;
-    const photoPath="/images/shop/"+image[0].filename;
+    const photoPath=backpath+"/images/shop/"+image[0].filename;
     // console.log(photoPath);
     const {  productName, price,description, categoryId } = req.body;
     try {

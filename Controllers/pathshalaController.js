@@ -2,7 +2,7 @@ const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddlewa
 const { NotFoundError } = require("../Utils/CustomErrors");
 const { getPathshala, getPathshalaById, addPathshala } = require("../db/PathshalaActions");
 const { deleteItemById } = require("../db/deleteaction");
-
+const backpath=process.env.HOSTED;
 const exp = module.exports;
 
 exp.getPathshala = RouterAsyncErrorHandler(async (req, res, next) => {
@@ -46,8 +46,8 @@ exp.addPathshala = RouterAsyncErrorHandler(async (req, res, next) => {
         return res.status(400).json({ error: "All fields are required" });
     }
     
-    const thumbnailName = "/images/pathshala/" + thumbnail[0].filename;
-    const mediaFileName = "/files/pathshala/" + mediaFile[0].filename;
+    const thumbnailName = backpath+"/images/pathshala/" + thumbnail[0].filename;
+    const mediaFileName = backpath+"/images/pathshala/" + mediaFile[0].filename;
     
     const { name, description, isAudio } = req.body;
     if (!name || !description || !isAudio) {

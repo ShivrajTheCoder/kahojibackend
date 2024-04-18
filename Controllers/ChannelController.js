@@ -57,7 +57,9 @@ exp.createChannel = RouterAsyncErrorHandler(async (req, res, next) => {
 
         // Check if required fields are provided
         if (!name || !description || !creatorid) {
-            throw new BadRequestError("Name, description, and creatorid are required");
+            return res.status(400).json({
+                message:"Bad request, all fields are mandatory"
+            })
         }
 
         // Create channel

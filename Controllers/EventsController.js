@@ -1,7 +1,7 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
 const { getAllEvents, getEventById, addEvent } = require("../db/EventsActions");
-
+const backpath=process.env.HOSTED;
 const exp = module.exports
 
 exp.getAllEvents = RouterAsyncErrorHandler(async (req, res, next) => {
@@ -43,7 +43,7 @@ exp.addEvent = RouterAsyncErrorHandler(async (req, res, next) => {
         });
     }
     const { event } = req.files;
-    const eventpath = "/images/events/" + event[0].filename;
+    const eventpath = backpath+"/images/events/" + event[0].filename;
     const { name, description, type } = req.body;
     if(!name || !description || !type){
         return res.status(400).json({

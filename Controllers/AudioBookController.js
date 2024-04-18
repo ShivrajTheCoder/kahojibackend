@@ -2,7 +2,7 @@ const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddlewa
 const { NotFoundError } = require("../Utils/CustomErrors");
 const { getAudioBooks, getAudioBooksById, addAudioBook } = require("../db/AudioBookActions");
 const { deleteItemById } = require("../db/deleteaction");
-
+const backpath=process.env.HOSTED;
 const exp=module.exports
 
 exp.getAudioBooks=RouterAsyncErrorHandler(async(req,res,next)=>{
@@ -47,8 +47,8 @@ exp.addAudioBook = RouterAsyncErrorHandler(async (req, res, next) => {
     if(!audio || !cover){
         return res.status(400).message("All fields are required");
     }
-    const audioPath="/images/audiobooks/"+audio[0].filename;
-    const coverPath="/images/audiobooks/"+cover[0].filename;
+    const audioPath=backpath+"/images/audiobooks/"+audio[0].filename;
+    const coverPath=backpath+"/images/audiobooks/"+cover[0].filename;
     try {
         if (!title || !description || !audioPath || !coverPath || !categoryId || !isFree || !authorId) {
             return res.status(400).message("All fields are required");

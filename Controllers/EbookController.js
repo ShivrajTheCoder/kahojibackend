@@ -2,7 +2,7 @@ const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddlewa
 const { NotFoundError } = require("../Utils/CustomErrors");
 const { getEbooks, getEbooksById, addEbook } = require("../db/EbooksActions");
 const { deleteItemById } = require("../db/deleteaction");
-
+const backpath=process.env.HOSTED;
 const exp=module.exports
 
 exp.getAllEbooks=RouterAsyncErrorHandler(async(req,res,next)=>{
@@ -47,8 +47,8 @@ exp.addEbook = RouterAsyncErrorHandler(async (req, res, next) => {
     if(!book || !cover){
         return res.status(400).json({message:"files not found"})
     }
-    const bookPath="/images/ebooks/"+book[0].filename;
-    const coverPath="/images/ebooks/"+cover[0].filename;
+    const bookPath=backpath+"/images/ebooks/"+book[0].filename;
+    const coverPath=backpath+"/images/ebooks/"+cover[0].filename;
     try {
         if (!categoryId || !title || !description || !bookPath || !coverPath || !isFree) {
             return res.status(400).json({message:"All fields are required"});

@@ -44,7 +44,6 @@ app.use('/images/events', express.static(path.join(baseUploadsPath, 'events')));
 app.use('/images/karyashala', express.static(path.join(baseUploadsPath, 'karyashala')));
 app.use('/images/pathshala', express.static(path.join(baseUploadsPath, 'pathshala')));
 app.use('/images/lives', express.static(path.join(baseUploadsPath, 'lives')));
-
 // app.use("/videos",videoRoutes);
 app.use("/audiobooks",audioBookRoutes);
 app.use("/category",categoryRoutes);
