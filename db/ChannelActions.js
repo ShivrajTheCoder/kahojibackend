@@ -46,19 +46,22 @@ const getChannelsByInterests = async (interestId) => {
 
 const createChannel = async (channelData) => {
     try {
-        const query = 'INSERT INTO channels (name, description, interest_id) VALUES (?, ?, ?)';
+        const query = 'INSERT INTO channels (name, description, interest_id, owner_id, isApproved) VALUES (?, ?, ?, ?, ?)';
         const result = await queryPromise(query, [
             channelData.name,
             channelData.description,
             channelData.interest_id,
+            channelData.owner_id,
+            channelData.isApproved || 0, // Default isApproved to 0 if not provided
         ]);
         // Return the ID of the newly inserted row
         return result.insertId;
     } catch (error) {
-        console.error('Error creating approved channel:', error);
+        console.error('Error creating channel:', error);
         throw error;
     }
 };
+
 
 const getChannelsByCreatorId = async (owner_id) => {
     try {

@@ -63,7 +63,7 @@ exp.createChannel = RouterAsyncErrorHandler(async (req, res, next) => {
         }
 
         // Create channel
-        const channelId = await createChannel({ name, description, creatorid, isApproved, interest_id }); // Pass interest_id to createChannel
+        const channelId = await createChannel({ name, description,owner_id: creatorid, isApproved, interest_id }); // Pass interest_id to createChannel
 
         // Return success response
         return res.status(201).json({
