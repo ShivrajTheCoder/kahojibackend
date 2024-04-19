@@ -53,17 +53,17 @@ exp.getChannelsByInterests = RouterAsyncErrorHandler(async (req, res, next) => {
 
 exp.createChannel = RouterAsyncErrorHandler(async (req, res, next) => {
     try {
-        const { name, description, creatorid, isApproved } = req.body;
+        const { name, description, creatorid, isApproved=0, interest_id } = req.body; // Add interest_id to destructuring
 
         // Check if required fields are provided
-        if (!name || !description || !creatorid) {
+        if (!name || !description || !creatorid || !interest_id) { // Check if interest_id is provided
             return res.status(400).json({
-                message:"Bad request, all fields are mandatory"
-            })
+                message: "Bad request, all fields are mandatory"
+            });
         }
 
         // Create channel
-        const channelId = await createChannel({ name, description, creatorid, isApproved });
+        const channelId = await createChannel({ name, description, creatorid, isApproved, interest_id }); // Pass interest_id to createChannel
 
         // Return success response
         return res.status(201).json({
@@ -74,6 +74,7 @@ exp.createChannel = RouterAsyncErrorHandler(async (req, res, next) => {
         next(error);
     }
 });
+
 
 exp.getChannelsByCreatorId = RouterAsyncErrorHandler(async (req, res, next) => {
     try {

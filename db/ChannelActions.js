@@ -46,7 +46,7 @@ const getChannelsByInterests = async (interestId) => {
 
 const createChannel = async (channelData) => {
     try {
-        const query = 'INSERT INTO channels (name, description,interest_id) VALUES (?, ?, ?, 1)';
+        const query = 'INSERT INTO channels (name, description, interest_id) VALUES (?, ?, ?)';
         const result = await queryPromise(query, [
             channelData.name,
             channelData.description,
