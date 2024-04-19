@@ -1,5 +1,5 @@
 const express = require('express')
-const { getPodcasts, getPodcastsById, getPodcastsByCategoryId, addPodcast, deletePodcastById } = require('../Controllers/PodcastController')
+const { getPodcasts, getPodcastsById, getPodcastsByCategoryId, addPodcast, deletePodcastById, getOriginalPodcasts } = require('../Controllers/PodcastController')
 const multer = require('multer');
 const adminAuthenticateToken = require('../Middlewares/AdminAuthMiddleware');
 const storage = multer.diskStorage({
@@ -21,4 +21,5 @@ router.route("/getpodcastbyid/:id").get(getPodcastsById)
 router.route("/getpodcastsbycategory/:category_id").get(getPodcastsByCategoryId)
 router.route("/uploadpodcast").post(multipleUpload, addPodcast)
 router.route("/deletepodcast/:id").delete(adminAuthenticateToken, multipleUpload, deletePodcastById)
+router.route("/getorginalpodcasts").get(getOriginalPodcasts)
 module.exports = router

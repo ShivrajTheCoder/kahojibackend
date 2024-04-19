@@ -59,9 +59,23 @@ const addPodcast = async (authorId, name, description, mediaLink, isVideo, categ
 };
 
 
+const getOriginalPodcasts = async () => {
+    try {
+        const authorId = 1; // Set authorId to 1 for original content
+        const query = 'SELECT * FROM podcasts WHERE authorId = ?';
+        const rows = await queryPromise(query, [authorId]);
+        return rows;
+    } catch (error) {
+        console.error('Error fetching original podcasts:', error);
+        throw error;
+    }
+};
+
 module.exports = {
     getPodcasts,
     getPodcastById,
     getPodcastsByCategory,
-    addPodcast // Add the addPodcast function to exports
+    addPodcast,
+    getOriginalPodcasts // Add the getOriginalPodcasts function to exports
 };
+
