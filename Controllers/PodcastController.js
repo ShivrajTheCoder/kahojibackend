@@ -56,7 +56,7 @@ exp.getPodcastsByCategoryId = RouterAsyncErrorHandler(async (req, res, next) => 
 
 exp.addPodcast = RouterAsyncErrorHandler(async (req, res, next) => {
     const { authorId, name, description, categoryId, isApproved = 0 } = req.body;
-    let isVideo = req.body.isVideo ? 1 : 0;
+    let isVideo = (req.body.isVideo===true || req.body.isVideo===1 ) ? 1 : 0;
     // console.log(req.files);
     if (!req.files) {
         return res.status(400).json({
