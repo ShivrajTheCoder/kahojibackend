@@ -96,6 +96,16 @@ const updateChannelApprovalStatus = async (channelId, isApproved) => {
         throw error; // Throw the error to be caught by the caller
     }
 };
+const getAllUnapprovedChannels = async () => {
+    try {
+        const query = 'SELECT * FROM channels WHERE isApproved = 0';
+        const unapprovedChannels = await queryPromise(query);
+        return unapprovedChannels;
+    } catch (error) {
+        console.error('Error fetching unapproved channels:', error);
+        throw error;
+    }
+};
 module.exports = {
     getAllChannels,
     getChannelById,
@@ -103,5 +113,6 @@ module.exports = {
     createChannel,
     getChannelsByCreatorId,
     getAllCreatorChannels,
-    updateChannelApprovalStatus
+    updateChannelApprovalStatus,
+    getAllUnapprovedChannels
 };

@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError, BadRequestError } = require("../Utils/CustomErrors");
-const { getAllChannels, getChannelById, getChannelsByCategory, createChannel, getChannelsByCreatorId, getChannelsByInterests, updateChannelApprovalStatus } = require("../db/ChannelActions");
+const { getAllChannels, getChannelById, getChannelsByCategory, createChannel, getChannelsByCreatorId, getChannelsByInterests, updateChannelApprovalStatus, getAllUnapprovedChannels } = require("../db/ChannelActions");
 
 const exp = module.exports;
 
@@ -109,6 +109,17 @@ exp.updateChannelApproval = RouterAsyncErrorHandler(async (req, res, next) => {
         // Return success response
         return res.status(200).json({
             message: "Channel approval status updated successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+exp.getAllUnapprovedChannels = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const unapprovedChannels = await getAllUnapprovedChannels(); // Fetch all unapproved channels
+        return res.status(200).json({
+            unapprovedChannels,
+            message: "Unapproved channels fetched successfully"
         });
     } catch (error) {
         next(error);
