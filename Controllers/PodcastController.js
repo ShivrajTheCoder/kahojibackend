@@ -2,7 +2,7 @@ const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddlewa
 const { NotFoundError } = require("../Utils/CustomErrors");
 const { getPodcasts, getPodcastById, getPodcastsByCategory, addPodcast, getOriginalPodcasts } = require("../db/PodcastActions");
 const { deleteItemById } = require("../db/deleteaction");
-const backpath=process.env.HOSTED;
+const backpath = process.env.HOSTED;
 const exp = module.exports
 
 exp.getPodcasts = RouterAsyncErrorHandler(async (req, res, next) => {
@@ -55,29 +55,30 @@ exp.getPodcastsByCategoryId = RouterAsyncErrorHandler(async (req, res, next) => 
 });
 
 exp.addPodcast = RouterAsyncErrorHandler(async (req, res, next) => {
-    const { authorId, name, description,  isVideo, categoryId,isApproved=0 } = req.body;
+    const { authorId, name, description, categoryId, isApproved = 0 } = req.body;
+    let isVideo = req.body.isVideo ? 1 : 0;
     // console.log(req.files);
-    if(!req.files){
+    if (!req.files) {
         return res.status(400).json({
-            message:"No file uploaded"
+            message: "No file uploaded"
         })
     }
-    const {thumbnail,mediaFile}=req.files;
-    if(!thumbnail || !mediaFile){
+    const { thumbnail, mediaFile } = req.files;
+    if (!thumbnail || !mediaFile) {
         return res.status(400).json({
-            message:"All fields are required"
+            message: "All fields are required"
         })
     }
-    const thumbnailPath=backpath+"/images/podcasts/"+thumbnail[0].filename;
-    const mediaFilePath=backpath+"/images/podcasts/"+mediaFile[0].filename;
+    const thumbnailPath = backpath + "/images/podcasts/" + thumbnail[0].filename;
+    const mediaFilePath = backpath + "/images/podcasts/" + mediaFile[0].filename;
     if (!authorId || !name || !description || !thumbnailPath || !isVideo || !categoryId || !mediaFilePath) {
         return res.status(400).json({
-            message:"All fields are required"
+            message: "All fields are required"
         })
     }
     try {
         // Add podcast
-        const podcastId = await addPodcast(authorId, name, description, mediaFilePath, isVideo , categoryId, thumbnailPath,isApproved);
+        const podcastId = await addPodcast(authorId, name, description, mediaFilePath, isVideo, categoryId, thumbnailPath, isApproved);
         return res.status(201).json({
             id: podcastId,
             message: "Podcast added successfully"
@@ -89,7 +90,7 @@ exp.addPodcast = RouterAsyncErrorHandler(async (req, res, next) => {
 exp.deletePodcastById = RouterAsyncErrorHandler(async (req, res, next) => {
     try {
         const { id } = req.params;
-        const deleted = await deleteItemById("podcasts",id);
+        const deleted = await deleteItemById("podcasts", id);
         if (!deleted) {
             throw new NotFoundError("podcasts not found");
         }
