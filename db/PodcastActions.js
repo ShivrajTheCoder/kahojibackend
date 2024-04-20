@@ -46,7 +46,7 @@ const getPodcastsByCategory = async (category_id) => {
 
 const addPodcast = async (authorId, name, description, mediaLink, isVideo, categoryId, thumbnail) => {
     try {
-        let isApproved = authorId === 1 ? true : false; // Check if authorId is 1
+        let isApproved = authorId === 1 ? 1 : 0; // Check if authorId is 1
         
         const query = 'INSERT INTO podcasts (authorId, name, description, media_link, isVideo, category_id, thumbnail, isApproved) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         const result = await queryPromise(query, [authorId, name, description, mediaLink, isVideo, categoryId, thumbnail, isApproved]);

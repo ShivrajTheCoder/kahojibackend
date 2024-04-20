@@ -77,7 +77,7 @@ exp.addPodcast = RouterAsyncErrorHandler(async (req, res, next) => {
     }
     try {
         // Add podcast
-        const podcastId = await addPodcast(authorId, name, description, mediaFilePath, isVideo ? 1 :0 , categoryId, thumbnailPath);
+        const podcastId = await addPodcast(authorId, name, description, mediaFilePath, isVideo , categoryId, thumbnailPath);
         return res.status(201).json({
             id: podcastId,
             message: "Podcast added successfully"
