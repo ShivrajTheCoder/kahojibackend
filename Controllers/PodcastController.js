@@ -66,12 +66,13 @@ exp.addPodcast = RouterAsyncErrorHandler(async (req, res, next) => {
     const { thumbnail, mediaFile } = req.files;
     if (!thumbnail || !mediaFile) {
         return res.status(400).json({
-            message: "All fields are required"
+            message: "All files are required"
         })
     }
     const thumbnailPath = backpath + "/images/podcasts/" + thumbnail[0].filename;
     const mediaFilePath = backpath + "/images/podcasts/" + mediaFile[0].filename;
-    if (!authorId || !name || !description || !thumbnailPath || !isVideo || !categoryId || !mediaFilePath) {
+    console.log(authorId,name,description,thumbnailPath,isVideo,categoryId,mediaFilePath,isApproved)
+    if (!authorId || !name || !description || !thumbnailPath || !categoryId || !mediaFilePath) {
         return res.status(400).json({
             message: "All fields are required"
         })
