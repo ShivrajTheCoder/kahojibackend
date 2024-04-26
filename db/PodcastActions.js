@@ -68,12 +68,27 @@ const getOriginalPodcasts = async () => {
         throw error;
     }
 };
-
+const approvePodcast = async (podcastId) => {
+    try {
+        const query = 'UPDATE podcasts SET isApproved = ? WHERE id = ?';
+        const result = await queryPromise(query, [1, podcastId]);
+        // Check if any rows were affected
+        if (result.affectedRows > 0) {
+            return true; // Podcast approved successfully
+        } else {
+            return false; // Podcast with given ID not found
+        }
+    } catch (error) {
+        console.error('Error approving podcast:', error);
+        throw error;
+    }
+};
 module.exports = {
     getPodcasts,
     getPodcastById,
     getPodcastsByCategory,
     addPodcast,
+    approvePodcast,
     getOriginalPodcasts // Add the getOriginalPodcasts function to exports
 };
 

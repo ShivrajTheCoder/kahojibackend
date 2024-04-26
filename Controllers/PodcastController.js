@@ -1,6 +1,6 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
-const { getPodcasts, getPodcastById, getPodcastsByCategory, addPodcast, getOriginalPodcasts } = require("../db/PodcastActions");
+const { getPodcasts, getPodcastById, getPodcastsByCategory, addPodcast, getOriginalPodcasts, approvePodcast } = require("../db/PodcastActions");
 const { deleteItemById } = require("../db/deleteaction");
 const backpath = process.env.HOSTED;
 const exp = module.exports
@@ -112,6 +112,23 @@ exp.getOriginalPodcasts = RouterAsyncErrorHandler(async (req, res, next) => {
         return res.status(200).json({
             originalPodcasts,
             message: "Original podcasts fetched successfully"
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+
+exp.approvePodcastById = RouterAsyncErrorHandler(async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        // Call approvePodcast function from PodcastActions module
+        const approved = await approvePodcast(id);
+        if (!approved) {
+            throw new NotFoundError("Podcast not found");
+        }
+        return res.status(200).json({
+            message: "Podcast approved successfully"
         });
     } catch (error) {
         next(error);
