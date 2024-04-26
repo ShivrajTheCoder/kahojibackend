@@ -6,7 +6,7 @@ const backpath = process.env.HOSTED;
 const exp = module.exports
 
 exp.getPodcasts = RouterAsyncErrorHandler(async (req, res, next) => {
-    console.log("i was called")
+    // console.log("i was called")
     try {
         const podcasts = await getPodcasts();
         if (podcasts.lenght < 1) {
