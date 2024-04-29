@@ -1,23 +1,34 @@
 const { RouterAsyncErrorHandler } = require("../Middlewares/ErrorHandlerMiddleware");
 const { NotFoundError } = require("../Utils/CustomErrors");
 const { getAllChannels, getChannelById,  createChannel, getChannelsByCreatorId, getChannelsByInterests, updateChannelApprovalStatus, getAllUnapprovedChannels } = require("../db/ChannelActions");
-
+const { getCreatorById } = require("../db/CreatorActions");
+const {getInterestById}=require("../db/InterestActions");
 const exp = module.exports;
-
 exp.getAllChannels = RouterAsyncErrorHandler(async (req, res, next) => {
     try {
         const channels = await getAllChannels();
         if (channels.length < 1) {
             throw new NotFoundError("No channels found");
         }
+
+        // Fetch interest name for each channel
+        const channelsWithInterests = await Promise.all(channels.map(async channel => {
+            const interest = await getInterestById(channel.interest_id);
+            return {
+                ...channel,
+                interest_name: interest.name // Assuming the interest object has a property 'name'
+            };
+        }));
+
         return res.status(200).json({
-            channels,
+            channels: channelsWithInterests,
             message: "Channels fetched successfully"
         });
     } catch (error) {
         next(error);
     }
 });
+
 
 exp.getChannelById = RouterAsyncErrorHandler(async (req, res, next) => {
     try {
