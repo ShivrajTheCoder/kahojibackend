@@ -53,7 +53,7 @@ exp.getChannelsByInterests = RouterAsyncErrorHandler(async (req, res, next) => {
 
 exp.createChannel = RouterAsyncErrorHandler(async (req, res, next) => {
     try {
-        const { name, description, creatorid, isApproved=0, interest_id } = req.body; // Add interest_id to destructuring
+        const { name, description, creatorid, isApproved=1, interest_id } = req.body; // Add interest_id to destructuring
 
         // Check if required fields are provided
         if (!name || !description || !creatorid || !interest_id) { // Check if interest_id is provided

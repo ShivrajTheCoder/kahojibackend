@@ -52,7 +52,7 @@ const createChannel = async (channelData) => {
             channelData.description,
             channelData.interest_id,
             channelData.owner_id,
-            channelData.isApproved || 0, // Default isApproved to 0 if not provided
+            channelData.isApproved || 1, // Default isApproved to 0 if not provided
         ]);
         // Return the ID of the newly inserted row
         return result.insertId;
